@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie 2</title>
+</head>
+<style>
+    #parent {
+        height: 550px;
+        width: 100%;
+        background-color: aqua;
+        border: 2px solid black;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-size: 60px;
+        color: brown;
+    }
+    div > img{
+        margin-top: 20px;
+        height: 150px;
+        width: 200px;
+    }
+</style>
+
+<body>
+    <div id="parent">
+        <h1>Movies1</h1>
+        <input type="text" id="movie" placeholder="Enter movie name" />
+        <button onclick="movieSearch()">Search</button>
+        <div id="show"></div>
+
+        <!-- <div id="container"></div> -->
+    </div>
+</body>
+
+</html>
+<script>
+
+    async function movieSearch() {
+        try {
+            let movie = document.getElementById("movie").value;
+
+            let response = await fetch(`http://www.omdbapi.com/?apikey=7c6266e1&t=${movie}`);
+            let data = await response.json();
+
+            // console.log("data:", data);
+
+           if (data.Response == "False") {
+               show.innerHTML = null;
+                //   console.log("Success")
+                let div = document.getElementById("show");
+
+                let img = document.createElement("img");
+                img.src = "https://thumbs.dreamstime.com/z/error-page-layout-vector-design-website-page-creative-concept-page-you-requested-could-not-be-found-oops-error-page-error-page-99296059.jpg";
+
+                div.append(img);
+            }
+            else {
+                showMovie(data)
+                // show(data1)
+            }
+
+        }
+        catch (err) {
+            console.log("err:", err);
+        }
+    }
+
+    let show = document.getElementById("show");
+
+    function showMovie(movie) {
+
+        let div = document.createElement('div');
+
+        show.innerHTML = "";
+
+        div.innerHTML = `
+
+     <img  src= "${movie.Poster}"/>
+
+     <p>${movie.Title}</p>
+     <p> Cast: ${movie.Actors}</p>
+     <p> Release Date: ${movie.Released}</p>
+     <p> Director: sir ${movie.Director}</p>
+     <p>Imdb rating:${movie.imdbRating}</p>`
+
+        show.append(div);
+
+    }
+</script>
