@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie 1</title>
+</head>
+<style>
+#parent{
+    height: 550px;
+    width: 100%;
+    background-color: aqua;
+    border: 2px solid black;
+    text-align: center;
+    border-radius: 10px;
+}
+
+h1{
+    font-size: 60px;
+    color: brown;
+}
+</style>
+<body>
+    <div id="parent">
+    <h1>Movies1</h1>
+    <input type="text" id="movie" placeholder="Enter movie name"/>
+    <button onclick="movieSearch()">Search</button>
+    <div id="show"></div>
+    </div>
+</body>
+</html>
+<script>
+    
+    async function movieSearch(){
+        try{
+        let movie = document.getElementById("movie").value;
+
+       let response = await fetch(`http://www.omdbapi.com/?apikey=7c6266e1&t=${movie}`);
+       let data = await response.json();
+
+      // console.log("data:", data);
+
+      showMovie(data);
+
+        }
+        catch(err){
+            console.log("err:", err);
+        }
+    }
+     
+    let show = document.getElementById("show");
+
+    function showMovie(movie){
+        
+       let div = document.createElement('div');
+
+       show.innerHTML = "";
+
+        div.innerHTML = `
+     <p>${movie.Title}</p>
+     <p> Cast: ${movie.Actors}</p>
+     <p> Release Date: ${movie.Released}</p>
+     <p> Director: sir ${movie.Director}</p>
+     <p>Imdb rating:${movie.imdbRating}</p>`
+
+     show.append(div);
+
+    }
+</script>
